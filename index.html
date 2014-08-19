@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html> 
+<head>
+  <title>Slicer4 download stats</title>
+
+  <link rel="stylesheet" type="text/css" href="bower_components/dc.js/dc.css" />
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+  <link rel="stylesheet" type="text/css"
+  href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
+
+  <script>
+  var AppDefaults = {
+    downloadDataFile: 'data/slicer-download-data.json',
+    fallbackDataFile: 'data/fallback/slicer-download-data.json'
+  };
+  </script>
+
+  <style type="text/css">
+  .dc-chart g.row text {
+    fill: #000000;
+    font-weight: normal;
+  }
+
+  .dc-data-count .filter-count {
+    margin-bottom: 1px;
+    margin-top: 1px;
+    font-size: 40px;
+    color: #aaaaaa;
+  }
+
+  h2 {
+    display:inline-block;
+    font-size: 140%;
+    margin-bottom: 0px;
+    margin-top: 5px;
+  }
+
+
+  #daterange {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 275px;
+  }
+  #daterange-content {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .negmargin {
+   margin-left: -15px;
+ }
+ </style>
+
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1 col-sm-2 hidden-xs">
+        <img src="img/slicer-logo-79x80.png"></img>
+      </div>
+      <div class="col-md-9 col-sm-8 col-xs-8">
+       <h1>Slicer4 download stats</h1>
+     </div>
+
+     <div class="col-md-2 col-sm-2 col-xs-4">
+      <div class="dc-data-count">
+        <span class="filter-count"></span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4 col-sm-12 col-lg-4">
+      <div class="row">
+       <div class="col-md-12 col-sm-6 col-xs-12">
+        <div class="dc-chart">
+          <h2>Date range</h2>
+          <div>
+            <button class="btn btn-default" id="daterange">
+              <span class="glyphicon
+              glyphicon-calendar"></span>
+              <span id="daterange-content"></span>&nbsp;
+              <span class="caret"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-sm-6 col-xs-12">
+        <div id="version-chart" class="dc-chart">
+          <div><h2>Version</h2>&nbsp;
+           <a class="reset" onclick="app.chartReset(app.versionChart)">
+             <span class="glyphicon glyphicon-remove"></span>
+           </a>
+         </div>
+       </div>
+     </div>
+
+
+     <div class="col-md-12 col-sm-6 col-xs-12">
+      <div id="os-chart">
+       <div><h2>Operating system</h2>&nbsp;
+         <a class="reset" onclick="app.chartReset(app.osChart)">
+           <span class="glyphicon glyphicon-remove"></span>
+         </a>
+       </div>
+     </div>
+   </div>
+
+   <div class="col-md-12 col-sm-6 col-xs-12">
+    <div id="stable-chart">
+      <div><h2>Stability</h2>&nbsp;
+       <a class="reset" onclick="app.chartReset(app.stableChart)">
+         <span class="glyphicon glyphicon-remove"></span>
+       </a>
+     </div>
+   </div>
+ </div>
+</div>
+</div>
+
+
+<div class="col-md-4 col-sm-6">
+  <div id="region-chart">
+   <div> <h2>Region</h2>&nbsp;
+     <a class="reset" onclick="app.chartReset(app.regionChart)">
+       <span class="glyphicon glyphicon-remove"></span>
+     </a>
+   </div>
+ </div>
+</div>
+
+<div class="col-md-4 col-sm-6">
+  <div id="country-chart">
+    <div> <h2>Country</h2>&nbsp;
+     <a class="reset" onclick="app.chartReset(app.countryChart)">
+       <span class="glyphicon glyphicon-remove"></span>
+     </a>
+   </div>
+ </div>
+</div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div id="month-chart">
+      <div> <h2>Downloads per day</h2>
+        <a class="reset" onclick="app.chartReset(app.monthChart)">
+         <span class="glyphicon glyphicon-remove"></span>
+       </a>
+     </div>
+   </div>
+ </div>
+</div>
+
+</div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/d3/d3.min.js"></script>
+<script src="bower_components/lodash/dist/lodash.underscore.min.js"></script>
+<script src="bower_components/crossfilter/crossfilter.min.js"></script>
+<script src="bower_components/moment/min/moment-with-locales.min.js"></script>
+<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<script src="bower_components/dc.js/dc.js"></script> <!-- don't use .min version -->
+<script src="bower_components/colorbrewer/colorbrewer.js"></script>
+<script src="stats.js"></script>
+<script>
+app.main(AppDefaults);
+</script>
+<hr>
+</body> </html>
