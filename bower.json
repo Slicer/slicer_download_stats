@@ -1,5 +1,5 @@
 {
-	"name": "slicer4-stats",
+	"name": "slicer4-download-stats",
 	"version": "1.0",
 	"main":  "index.html",
 	"ignore": [
