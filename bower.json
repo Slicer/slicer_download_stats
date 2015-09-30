@@ -1,18 +1,18 @@
 {
-	"name": "slicer4-download-stats",
-	"version": "1.0",
-	"main":  "index.html",
-	"ignore": [
-	],
-	"dependencies": {
-		"dc.js": ">=2.0.0-alpha.2",
-		"jquery":  "",
-		"bootstrap": ">=3.2.0",
-		"bootstrap-daterangepicker": "",
-		"colorbrewer": "",
-		"d3": "",
-		"lodash": "",
-		"moment": "",
-		"crossfilter": ""
-	}
+  "name": "slicer4-download-stats",
+  "version": "1.0",
+  "main": "index.html",
+  "ignore": [],
+  "dependencies": {
+    "dc.js": ">=2.0.0-alpha.2",
+    "jquery": "",
+    "bootstrap": ">=3.2.0",
+    "bootstrap-daterangepicker": "",
+    "colorbrewer": "",
+    "d3": "",
+    "lodash": "",
+    "moment": "",
+    "crossfilter": "",
+    "spin.js": "spinjs#~2.3.2"
+  }
 }
