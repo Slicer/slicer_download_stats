@@ -3,74 +3,28 @@
 var app = function() {
 	var exports = {};
 
-
-    // expand the date range by a fixed amount of time both before
-    // and after in order to be sure to include endpoints in the data
-    // range.
-    function expandDateRange(range, amt) {
-    	return [moment(range[0]).startOf(amt),
-    	moment(range[1]).endOf(amt)];
+    function blankContent(state) {
+        d3.selectAll('.initially-hidden').classed('initially-hidden', state);
     }
 
-    // Returns a truth function for matching selected versions.
-    // Version numbers with only major or major.minor numbers match
-    // all appropriate major.minor.release numbers.
-    function versionSelectFilter(v) {
-    	return function(d) {
-    		if (v === '*') { return true };
-    		var matchVersion = v.split('.');
-    		var testVersion = d.split('.');
-    		var testLength = Math.min(matchVersion.length, testVersion.length);
-    		for(var i = testLength - 1; i >=0; i--) {
-    			if(matchVersion[i] != testVersion[i]) {
-    				return false;
-    			}
-    		}
-    		return true;
-    	}
-    }
-
-    // converts a "data and id" representation to a reference-based one.
-    function referenceRecord(a, data) {
-    	var result = [
-    	data.bitstream[a[0]],
-    	new Date(a[1] + 'Z'),
-    	a[2],
-    	data.countryCode[a[2]],
-    	data.location[a[3]]
-    	];
-    	return result;
-    }
-
-    // various formatting helpers
-    function keyAndValueLabel(d) {
-    	return "" + d.key + "  (" + d.value + ")";
-    }
-
-    function keyAndPercentValueLabel(total_value, d) {
-    	return "" + d.key + "  (" + d3.round(d.value/total_value*100.0, 0) + "%)";
-    }
-
-    var osLabelDict = {
-    	linux: "Linux",
-    	macosx: "Mac",
-    	win: "Windows"
-    };
-
-    function osLabel(d) {
-    	return keyAndValueLabel({key: osLabelDict[d.key], value: d.value});
-    }
-
-    function osPercentLabel(total_value, d) {
-    	return keyAndPercentValueLabel(total_value, {key: osLabelDict[d.key], value: d.value});
-    }
-
-    function outputDateRange(low, high) {
-    	d3.select('#date-low').text(low);
-    	d3.select('#date-high').text(high);
+    function createSpinner() {
+        var _spinner = new Spinner().spin();
+        return {
+            start: function() {
+                document.querySelector('#all-of-page').appendChild(_spinner.el);
+                return _spinner;
+            },
+            stop: function() {
+                _spinner.stop();
+                return _spinner;
+            }
+        }
     }
 
     function main(defaults) {
+        blankContent(true);
+
+        var spinner = createSpinner().start();
         d3.json(defaults.downloadDataFile, function(err, data) {
             if(err) {
                 d3.json(defaults.fallbackDataFile, function(err, data) {
@@ -80,6 +34,8 @@ var app = function() {
             } else {
                 processData(data);
             }
+            blankContent(false);
+            spinner.stop();
         });
     }
 
@@ -240,7 +196,73 @@ function chartReset(chart) {
 };
 
 
-exports.chartReset = chartReset;
-exports.main = main;
-return exports;
+    // expand the date range by a fixed amount of time both before
+    // and after in order to be sure to include endpoints in the data
+    // range.
+    function expandDateRange(range, amt) {
+        return [moment(range[0]).startOf(amt),
+        moment(range[1]).endOf(amt)];
+    }
+
+    // Returns a truth function for matching selected versions.
+    // Version numbers with only major or major.minor numbers match
+    // all appropriate major.minor.release numbers.
+    function versionSelectFilter(v) {
+        return function(d) {
+            if (v === '*') { return true };
+            var matchVersion = v.split('.');
+            var testVersion = d.split('.');
+            var testLength = Math.min(matchVersion.length, testVersion.length);
+            for(var i = testLength - 1; i >=0; i--) {
+                if(matchVersion[i] != testVersion[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    // converts a "data and id" representation to a reference-based one.
+    function referenceRecord(a, data) {
+        var result = [
+        data.bitstream[a[0]],
+        new Date(a[1] + 'Z'),
+        a[2],
+        data.countryCode[a[2]],
+        data.location[a[3]]
+        ];
+        return result;
+    }
+
+    // various formatting helpers
+    function keyAndValueLabel(d) {
+        return "" + d.key + "  (" + d.value + ")";
+    }
+
+    function keyAndPercentValueLabel(total_value, d) {
+        return "" + d.key + "  (" + d3.round(d.value/total_value*100.0, 0) + "%)";
+    }
+
+    var osLabelDict = {
+        linux: "Linux",
+        macosx: "Mac",
+        win: "Windows"
+    };
+
+    function osLabel(d) {
+        return keyAndValueLabel({key: osLabelDict[d.key], value: d.value});
+    }
+
+    function osPercentLabel(total_value, d) {
+        return keyAndPercentValueLabel(total_value, {key: osLabelDict[d.key], value: d.value});
+    }
+
+    function outputDateRange(low, high) {
+        d3.select('#date-low').text(low);
+        d3.select('#date-high').text(high);
+    }
+
+    exports.chartReset = chartReset;
+    exports.main = main;
+    return exports;
 }();
