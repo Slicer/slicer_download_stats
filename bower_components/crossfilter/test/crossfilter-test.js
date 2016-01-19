@@ -428,9 +428,20 @@ suite.addBatch({
             var group = data.quantity.groupAll().reduceCount();
             data.total.filterRange([200, Infinity]);
             data.total.filterFunction(function(d) { return "0"; });
-            assert.deepEqual(group.value(), 43);
+            assert.equal(group.value(), 43);
             data.total.filterFunction(function(d) { return ""; });
-            assert.deepEqual(group.value(), 0);
+            assert.equal(group.value(), 0);
+          } finally {
+            data.total.filterAll();
+          }
+        },
+        "groups on the first dimension are updated correctly": function(data) {
+          try {
+            var group = data.date.groupAll().reduceCount();
+            data.total.filterFunction(function(d) { return d === 90; });
+            assert.equal(group.value(), 13);
+            data.total.filterFunction(function(d) { return d === 91; });
+            assert.equal(group.value(), 1);
           } finally {
             data.total.filterAll();
           }
@@ -813,6 +824,16 @@ suite.addBatch({
           dimension.dispose();
           data.add([3, 4, 5]);
           assert.isFalse(callback);
+        },
+        "clears dimension filters from groups": function() {
+          var data = crossfilter([0, 0, 2, 2]),
+              d1 = data.dimension(function(d) { return -d; }),
+              d2 = data.dimension(function(d) { return +d; }),
+              g2 = d2.group(function(d) { return Math.round( d / 2 ) * 2; }),
+              all = g2.all();
+          d1.filterRange([-1, 1]); // a filter is present when the dimension is disposed
+          d1.dispose();
+          assert.deepEqual(g2.all(), [{key: 0, value: 2}, {key: 2, value: 2}]);
         }
       }
     },

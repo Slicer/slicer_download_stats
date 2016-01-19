@@ -103,7 +103,7 @@ function crossfilter() {
     // Incorporate any existing data into this dimension, and make sure that the
     // filter bitset is wide enough to handle the new dimension.
     m |= one;
-    if (M >= 32 ? !one : m & (1 << M) - 1) {
+    if (M >= 32 ? !one : m & -(1 << M)) {
       filters = crossfilter_arrayWiden(filters, M <<= 1);
     }
     preAdd(data, 0, n);
@@ -297,7 +297,7 @@ function crossfilter() {
           removed = [];
 
       for (i = 0; i < n; ++i) {
-        if (filters[k = index[i]] & one ^ !(x = f(values[i], i))) {
+        if (!(filters[k = index[i]] & one) ^ !!(x = f(values[i], i))) {
           if (x) filters[k] &= zero, added.push(k);
           else filters[k] |= one, removed.push(k);
         }
@@ -717,9 +717,8 @@ function crossfilter() {
       if (i >= 0) dataListeners.splice(i, 1);
       i = removeDataListeners.indexOf(removeData);
       if (i >= 0) removeDataListeners.splice(i, 1);
-      for (i = 0; i < n; ++i) filters[i] &= zero;
       m &= zero;
-      return dimension;
+      return filterAll();
     }
 
     return dimension;
