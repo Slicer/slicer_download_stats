@@ -3,24 +3,6 @@
 var app = function() {
 	var exports = {};
 
-    function blankContent(state) {
-        d3.selectAll('.initially-hidden').classed('initially-hidden', state);
-    }
-
-    function createSpinner() {
-        var _spinner = new Spinner().spin();
-        return {
-            start: function() {
-                document.querySelector('#all-of-page').appendChild(_spinner.el);
-                return _spinner;
-            },
-            stop: function() {
-                _spinner.stop();
-                return _spinner;
-            }
-        }
-    }
-
     function main(defaults) {
         blankContent(true);
 
@@ -190,10 +172,28 @@ var app = function() {
 	dc.redrawAll();
 }
 
-function chartReset(chart) {
-	chart.filterAll();
-	dc.redrawAll();
-};
+    function blankContent(state) {
+        d3.selectAll('.initially-hidden').classed('initially-hidden', state);
+    }
+
+    function createSpinner() {
+        var _spinner = new Spinner().spin();
+        return {
+            start: function() {
+                document.querySelector('#all-of-page').appendChild(_spinner.el);
+                return _spinner;
+            },
+            stop: function() {
+                _spinner.stop();
+                return _spinner;
+            }
+        }
+    }
+
+    function chartReset(chart) {
+        chart.filterAll();
+        dc.redrawAll();
+    }
 
 
     // expand the date range by a fixed amount of time both before
