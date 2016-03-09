@@ -145,8 +145,8 @@ var app = function() {
     	.ordering(function(d) { return -d.value; })
     	.xAxis().ticks(4);
 
-    	monthChart.width(900)
-    	.height(100)
+    	monthChart.width(900) 
+   	.height(175)
     	.ordinalColors(['#5555aa'])
     	.elasticY(true)
     	.dimension(byDay)
