@@ -21,6 +21,10 @@ var app = function() {
         });
     }
 
+    function versionStringToInt(s) {
+	return s.split('.').reduce((a, v, i) => a + parseInt(v)*Math.pow(1000, 2-i), 0);
+    }
+
     function processData(data) {
     	var refData = _.map(data.access, function(x) { return referenceRecord(x, data); });
     	var accessf = crossfilter(refData);
@@ -35,6 +39,8 @@ var app = function() {
     	var bySubregion =  accessf.dimension(function(x) { return x[3][1]; });
     	var byCountry =  accessf.dimension(function(x) { return x[3][0]; });
     	var byDay = accessf.dimension(function(x) { return d3.time.day(x[1]); });
+	var sortByVersion = function(x) { return versionStringToInt(x.key); };
+
     	var dayRange = expandDateRange([byDay.bottom(1)[0][1],
     		byDay.top(1)[0][1]],
     		'day');
@@ -95,10 +101,11 @@ var app = function() {
     	exports.monthChart = monthChart;
 
     	versionChart.width(320)
-    	.height(170)
+    	.height(250)
     	.ordinalColors([chartColorValues[0]])
     	.dimension(byMinorVersion)
     	.group(groupByMinorVersion)
+	.ordering(sortByVersion)
     	.elasticX(true)
     	.label(function(x) { return keyAndPercentValueLabel(allAccess.value(), x) })
     	.xAxis().ticks(4);
